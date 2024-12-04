@@ -1,23 +1,35 @@
-import logo from './logo.svg';
 import styles from './App.module.css';
+import cat from './assets/cat.jpg';
+import vkicon from "./assets/vk-icon.svg";
 
 function App() {
   return (
     <div class={styles.App}>
-      <header class={styles.header}>
-        <img src={logo} class={styles.logo} alt="logo" />
-        <p>
-          Edit <code>src/App.jsx</code> and save to reload.
-        </p>
-        <a
-          class={styles.link}
-          href="https://github.com/solidjs/solid"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn Solid
-        </a>
-      </header>
+      <div class={styles.profileCard}>
+        <div class={styles.profileImage}>
+          <img src={cat} alt="Профиль" />
+        </div>
+        <div class={styles.profileInfo}>
+          <h1>Леонид Дьяченко (aka. Horvitz)</h1>
+          <div class={styles.age}>18 лет</div>
+          <div class={styles.position}>SRE Инженер</div>
+          <div class={styles.company}>Центр-инвест ❤️</div>
+          <div class={styles.socialLinks}>
+            <a href="https://t.me/horvitz" class={styles.socialLink} target="_blank" rel="noopener noreferrer">
+              <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/telegram.svg" alt="Telegram" />
+            </a>
+            <a href="https://github.com/horv1tz" class={styles.socialLink} target="_blank" rel="noopener noreferrer">
+              <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/github.svg" alt="Github" />
+            </a>
+            <a href="https://vk.com/horvitz" class={styles.socialLink} target="_blank" rel="noopener noreferrer">
+              <img src={vkicon} alt="VK" />
+            </a>
+            <a href="mailto:horvitz@dvorfs.ru" class={styles.socialLink} target="_blank" rel="noopener noreferrer">
+              <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/envelope-fill.svg" alt="Email" />
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
