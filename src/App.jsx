@@ -11,7 +11,6 @@ function App() {
         </div>
         <div class={styles.profileInfo}>
           <h1>Леонид Дьяченко (aka. Horvitz)</h1>
-          <div class={styles.age}>18 лет</div>
           <div class={styles.position}>SRE Инженер</div>
           <div class={styles.company}>Центр-инвест 💚</div>
           <div class={styles.socialLinks}>
