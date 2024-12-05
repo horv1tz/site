@@ -44,7 +44,7 @@
   <meta name="twitter:description"
     content="Профессиональный SRE Инженер, специализирующийся на Python, JavaScript, Go, Rust. Эксперт в области Linux, Docker, Kubernetes. Базируюсь в Ростове-на-Дону.">
   <meta name="twitter:image" content="https://horvitz.ru/assets/cat.jpg">
-<meta name=" twitter:creator" content="@horvitz">
+  <meta name=" twitter:creator" content="@horvitz">
   <meta name="twitter:site" content="@horvitz">
 
   <!-- Личные данные -->
@@ -92,13 +92,19 @@
   }
   </script>
   <title>Horvitz</title>
+
+  <link href="https://cdn.jsdelivr.net/gh/Alaev-Co/snowflakes/dist/snow.min.css" rel="stylesheet">
 </head>
 
-<body>
+<body style='overflow-x:hidden;'>
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root"></div>
 
   <script src="/src/index.jsx" type="module"></script>
+  <script src="https://cdn.jsdelivr.net/gh/Alaev-Co/snowflakes/dist/Snow.min.js"></script>
+  <script>
+    new Snow();
+  </script>
 </body>
 
 </html>
