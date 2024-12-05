@@ -1,5 +1,4 @@
 import styles from './App.module.css';
-// import cat from './assets/cat.jpg';
 import me from './assets/me.jpg';
 import vkicon from "./assets/vk-icon.svg";
 
@@ -8,7 +7,6 @@ function App() {
     <div class={styles.App}>
       <div class={styles.profileCard}>
         <div class={styles.profileImage}>
-          {/* <img src={cat} alt="Профиль" /> */}
           <img src={me} alt='Профиль'/>
         </div>
         <div class={styles.profileInfo}>
