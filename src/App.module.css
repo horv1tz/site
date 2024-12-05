@@ -47,7 +47,6 @@
   color: #FFFFFF;
 }
 
-.profileInfo .age,
 .profileInfo .position,
 .profileInfo .company {
   font-size: 16px;
@@ -68,7 +67,7 @@
 }
 
 .socialLink {
-  background-color: #3A3A3A;
+  background-color: #565656;
   color: #E0E0E0;
   text-decoration: none;
   width: 40px;
