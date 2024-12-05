@@ -12,7 +12,7 @@ function App() {
         <div class={styles.profileInfo}>
           <h1>Леонид Дьяченко (aka. Horvitz)</h1>
           <div class={styles.position}>SRE Инженер</div>
-          <div class={styles.company}>Центр-инвест 💚</div>
+          <a href="https://centrinvest.ru/" class={styles.company}>Центр-инвест 💚</a>
           <div class={styles.socialLinks}>
             <a href="https://t.me/horvitz" class={styles.socialLink} target="_blank" rel="noopener noreferrer">
               <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/telegram.svg" alt="Telegram" />
