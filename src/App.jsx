@@ -1,5 +1,5 @@
 import styles from './App.module.css';
-import cat from "https://s3.public.dvorfs.com/35754792-dvorfs/cat.jpg";
+import cat from "https://s3.timeweb.cloud/35754792-dvorfs/cat.jpg";
 import vkicon from "./assets/vk-icon.svg";
 
 function App() {
