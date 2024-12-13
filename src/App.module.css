@@ -1,11 +1,3 @@
-body {
-  overflow: hidden;
-  overflow-y: hidden;
-  /*для вертикального*/
-  overflow-x: hidden;
-  /*для горизонтального*/
-}
-
 .App {
   margin: 0;
   font-family: Arial, sans-serif;
