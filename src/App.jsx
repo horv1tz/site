@@ -1,7 +1,7 @@
 import styles from './App.module.css';
 import vkicon from "./assets/vk-icon.svg";
 
-const cat = "https://s3.dvorfs.com/horvitz-site/cat.jpg";
+const cat = "https://s3.dvorfs.com/horvitz-site/cat.webp";
 
 function App() {
 
