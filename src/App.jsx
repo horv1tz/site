@@ -4,7 +4,12 @@ import vkicon from "./assets/vk-icon.svg";
 const cat = "https://s3.dvorfs.com/horvitz-site/cat.webp";
 
 function App() {
-
+  new Snow(
+    {
+      snowBallIterationsInterval: 250
+    }
+  );
+  
   return (
     <div class={styles.App}>
       <div class={styles.profileCard}>
