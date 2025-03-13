@@ -43,7 +43,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t docker.dvorfs.com/your-repository/your-image:latest .  # Собираем Docker-образ
+          docker build -t docker.dvorfs.com/horvitz/site:latest .  # Собираем Docker-образ
 
       - name: Log in to Docker registry
         uses: docker/login-action@v2
@@ -54,7 +54,7 @@ jobs:
 
       - name: Push Docker image
         run: |
-          docker push docker.dvorfs.com/your-repository/your-image:latest  # Загружаем образ в Docker Registry
+          docker push docker.dvorfs.com/horvitz/site:latest  # Загружаем образ в Docker Registry
 
   deploy:
     runs-on: ubuntu-latest
@@ -74,10 +74,10 @@ jobs:
           ssh -o StrictHostKeyChecking=no $USER@$SERVER "docker rm -f $(docker ps -a -q) || true"
 
           # Pull нового Docker-образа с Docker Registry
-          ssh -o StrictHostKeyChecking=no $USER@$SERVER "docker pull docker.dvorfs.com/your-repository/your-image:latest"
+          ssh -o StrictHostKeyChecking=no $USER@$SERVER "docker pull docker.dvorfs.com/horvitz/site:latest"
 
           # Запуск нового контейнера
-          ssh -o StrictHostKeyChecking=no $USER@$SERVER "docker run -d -p 80:4173 --name your-container-name docker.dvorfs.com/your-repository/your-image:latest"
+          ssh -o StrictHostKeyChecking=no $USER@$SERVER "docker run -d -p 4173:4173 --name your-container-name docker.dvorfs.com/horvitz/site:latest"
 
           # Завершаем работу с SSH-агентом
           ssh-agent -k
