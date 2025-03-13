@@ -1,5 +1,5 @@
 # Используем официальный образ Node.js как базовый
-FROM node:21-alpine
+FROM node:22-alpine
 LABEL authors="horvitz"
 
 # Устанавливаем рабочую директорию
