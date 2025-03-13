@@ -1,32 +1,38 @@
 <script>
     import { t, locale, setLocale } from '$lib/translations.js';
     import { onMount } from 'svelte';
+    import { writable } from 'svelte/store';
+
+    // Создаём реактивную переменную для текущего языка
+    let currentLang = writable('ru');
 
     // Функция для смены языка
     function changeLanguage(lang) {
         if (typeof document !== 'undefined') {
-            // Сохраняем язык в cookies и localStorage
             document.cookie = `lang=${lang}; path=/; max-age=31536000; SameSite=Lax`; // 1 год
             localStorage.setItem('lang', lang);
         }
         setLocale(lang);
+        currentLang.set(lang); // Обновляем реактивную переменную с текущим языком
     }
 
-    // При загрузке страницы проверяем localStorage
+    // При загрузке страницы проверяем localStorage и cookies
     onMount(() => {
         if (typeof localStorage !== 'undefined') {
-            const savedLang = localStorage.getItem('lang');
-            if (savedLang) {
-                setLocale(savedLang);
-            }
+            const savedLang = localStorage.getItem('lang') || document.cookie.replace(/(?:(?:^|.*;\s*)lang\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+            const defaultLang = savedLang || 'ru';  // Устанавливаем язык по умолчанию, если не найден
+
+            setLocale(defaultLang);
+            currentLang.set(defaultLang); // Устанавливаем дефолтный язык в реактивную переменную
         }
     });
 </script>
 
-<select name="lang" id="lang-select" on:change={e => changeLanguage(e.target.value)}>
+<select name="lang" id="lang-select" bind:value={$currentLang} on:change={e => changeLanguage(e.target.value)}>
     <option value="ru">Русский</option>
     <option value="en">English</option>
 </select>
+
 <div class="app">
     <div class="profile-card">
         <div class="profile-image">
