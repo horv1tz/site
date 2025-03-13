@@ -48,6 +48,7 @@ jobs:
       - name: Log in to Docker registry
         uses: docker/login-action@v2
         with:
+          registry: docker.dvorfs.com  # Указываем правильный URL вашего Docker Registry
           username: ${{ secrets.DOCKER_USERNAME }}  # Убедитесь, что у вас настроены секреты для логина
           password: ${{ secrets.DOCKER_PASSWORD }}
 
