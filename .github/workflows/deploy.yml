@@ -77,6 +77,6 @@ jobs:
           eval "$(ssh-agent -s)"
           echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
           ssh -o StrictHostKeyChecking=no $USER@$SERVER "rm -rf /var/www/horvitz-ru/* && mkdir -p /var/www/horvitz-ru"
-          rsync -avz --delete ./dist/ $USER@$SERVER:/var/www/horvitz-ru/
+          sudo rsync -avz --delete ./dist/ $USER@$SERVER:/var/www/horvitz-ru/
           ssh -o StrictHostKeyChecking=no $USER@$SERVER "cp /var/www/horvitz-ru-static/sitemap.xml /var/www/horvitz-ru/ && cp /var/www/horvitz-ru-static/robots.txt /var/www/horvitz-ru/"
           ssh-agent -k
