@@ -1,9 +1,9 @@
-name: Build and Deploy
+name: Build, Push Docker Image and Deploy
 
 on:
   push:
     branches:
-      - main
+      - main  # Ветка, на которой будет запускаться деплой
 
 jobs:
   setup:
@@ -18,7 +18,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '21'  # Убедитесь, что версия Node.js соответствует вашему Dockerfile
 
       - name: Cache Node.js dependencies
         id: cache
@@ -41,43 +41,42 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Build Docker image
+        run: |
+          docker build -t docker.dvorfs.com/your-repository/your-image:latest .  # Собираем Docker-образ
+
+      - name: Log in to Docker registry
+        uses: docker/login-action@v2
         with:
-          node-version: '20'
+          username: ${{ secrets.DOCKER_USERNAME }}  # Убедитесь, что у вас настроены секреты для логина
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Install dependencies from cache
-        run: npm ci
-
-      - name: Build Svelte project
-        run: npm run build
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-dist
-          path: public/
+      - name: Push Docker image
+        run: |
+          docker push docker.dvorfs.com/your-repository/your-image:latest  # Загружаем образ в Docker Registry
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
 
     steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-dist
-          path: ./public
-
-      - name: Deploy to server
+      - name: Deploy Docker image to server
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SERVER: ${{ secrets.SERVER }}
           USER: ${{ secrets.USER }}
         run: |
-          eval "$(ssh-agent -s)"
-          echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-          ssh -o StrictHostKeyChecking=no $USER@$SERVER "rm -rf /var/www/horvitz-ru/* && mkdir -p /var/www/horvitz-ru"
-          rsync -avz --delete ./public/ $USER@$SERVER:/var/www/horvitz-ru/
-          ssh -o StrictHostKeyChecking=no $USER@$SERVER "cp /var/www/horvitz-ru-static/sitemap.xml /var/www/horvitz-ru/ && cp /var/www/horvitz-ru-static/robots.txt /var/www/horvitz-ru/"
+          eval "$(ssh-agent -s)"  # Запуск SSH-агента
+          echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -  # Добавление приватного ключа в SSH-агент
+          
+          # Очистка старых контейнеров, если они есть
+          ssh -o StrictHostKeyChecking=no $USER@$SERVER "docker rm -f $(docker ps -a -q) || true"
+
+          # Pull нового Docker-образа с Docker Registry
+          ssh -o StrictHostKeyChecking=no $USER@$SERVER "docker pull docker.dvorfs.com/your-repository/your-image:latest"
+
+          # Запуск нового контейнера
+          ssh -o StrictHostKeyChecking=no $USER@$SERVER "docker run -d -p 80:4173 --name your-container-name docker.dvorfs.com/your-repository/your-image:latest"
+
+          # Завершаем работу с SSH-агентом
           ssh-agent -k
