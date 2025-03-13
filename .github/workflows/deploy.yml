@@ -34,11 +34,11 @@ jobs:
         run: npm install
 
       - name: Send TG notification about setup
-          uses: appleboy/telegram-action@master
-          with:
-            to: ${{ secrets.TELEGRAM_TO }}
-            token: ${{ secrets.TELEGRAM_TOKEN }}
-            message: ${{github.repository}} setup complited ✅
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: ${{ github.repository }} setup completed ✅
 
   build:
     runs-on: ubuntu-latest
@@ -64,12 +64,11 @@ jobs:
           docker push docker.dvorfs.com/horvitz/site:latest  # Загружаем образ в Docker Registry
 
       - name: Send TG notification about build
-          uses: appleboy/telegram-action@master
-          with:
-            to: ${{ secrets.TELEGRAM_TO }}
-            token: ${{ secrets.TELEGRAM_TOKEN }}
-            message: ${{github.repository}} build complited ✅
-
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: ${{ github.repository }} build completed ✅
 
   deploy:
     runs-on: ubuntu-latest
@@ -98,8 +97,8 @@ jobs:
           ssh-agent -k
 
       - name: Send TG notification about deploy
-          uses: appleboy/telegram-action@master
-          with:
-            to: ${{ secrets.TELEGRAM_TO }}
-            token: ${{ secrets.TELEGRAM_TOKEN }}
-            message: ${{github.repository}} deploy complited ✅
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: ${{ github.repository }} deploy completed ✅
