@@ -71,13 +71,13 @@ jobs:
           echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -  # Добавление приватного ключа в SSH-агент
           
           # Очистка старых контейнеров, если они есть
-          ssh -o StrictHostKeyChecking=no $USER@$SERVER "docker rm -f $(docker ps -a -q) || true"
+          ssh -o StrictHostKeyChecking=no $USER@$SERVER "docker rm -f horvitz-site || true"
 
           # Pull нового Docker-образа с Docker Registry
           ssh -o StrictHostKeyChecking=no $USER@$SERVER "docker pull docker.dvorfs.com/horvitz/site:latest"
 
           # Запуск нового контейнера
-          ssh -o StrictHostKeyChecking=no $USER@$SERVER "docker run -d -p 4173:4173 --name your-container-name docker.dvorfs.com/horvitz/site:latest"
+          ssh -o StrictHostKeyChecking=no $USER@$SERVER "docker run -d -p 4173:4173 --name horvitz-site docker.dvorfs.com/horvitz/site:latest"
 
           # Завершаем работу с SSH-агентом
           ssh-agent -k
