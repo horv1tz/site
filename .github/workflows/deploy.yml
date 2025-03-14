@@ -18,7 +18,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'  # Убедитесь, что версия Node.js соответствует вашему Dockerfile
+          node-version: '22'
 
       - name: Cache Node.js dependencies
         id: cache
@@ -31,44 +31,67 @@ jobs:
 
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: npm install
+        run: |
+          set -e
+          npm install
 
-      - name: Send TG notification about setup
+      - name: ✅ TG: Setup completed
+        if: success()
         uses: appleboy/telegram-action@master
+        continue-on-error: true
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: ${{ github.repository }} setup completed ✅
+          message: "✅ [SETUP COMPLETED] - Repo: ${{ github.repository }}\nBranch: ${{ github.ref_name }}"
+
+      - name: ❌ TG: Setup failed
+        if: failure()
+        uses: appleboy/telegram-action@master
+        continue-on-error: true
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: "❌ [SETUP FAILED] - Repo: ${{ github.repository }}\nBranch: ${{ github.ref_name }}"
 
   build:
     runs-on: ubuntu-latest
     needs: setup
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: Build Docker image
         run: |
-          docker build -t docker.dvorfs.com/horvitz/site:latest .  # Собираем Docker-образ
+          set -e
+          docker build -t docker.dvorfs.com/horvitz/site:latest .
 
       - name: Log in to Docker registry
         uses: docker/login-action@v2
         with:
-          registry: docker.dvorfs.com  # Указываем правильный URL вашего Docker Registry
-          username: ${{ secrets.DOCKER_USERNAME }}  # Убедитесь, что у вас настроены секреты для логина
+          registry: docker.dvorfs.com
+          username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Push Docker image
         run: |
-          docker push docker.dvorfs.com/horvitz/site:latest  # Загружаем образ в Docker Registry
+          set -e
+          docker push docker.dvorfs.com/horvitz/site:latest
 
-      - name: Send TG notification about build
+      - name: ✅ TG: Build completed
+        if: success()
         uses: appleboy/telegram-action@master
+        continue-on-error: true
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: ${{ github.repository }} build completed ✅
+          message: "📦 [BUILD COMPLETED] - Repo: ${{ github.repository }}\nBranch: ${{ github.ref_name }}"
+
+      - name: ❌ TG: Build failed
+        if: failure()
+        uses: appleboy/telegram-action@master
+        continue-on-error: true
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: "❌ [BUILD FAILED] - Repo: ${{ github.repository }}\nBranch: ${{ github.ref_name }}"
 
   deploy:
     runs-on: ubuntu-latest
@@ -81,24 +104,37 @@ jobs:
           SERVER: ${{ secrets.SERVER }}
           USER: ${{ secrets.USER }}
         run: |
-          eval "$(ssh-agent -s)"  # Запуск SSH-агента
-          echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -  # Добавление приватного ключа в SSH-агент
-          
-          # Очистка старых контейнеров, если они есть
-          ssh -o StrictHostKeyChecking=no $USER@$SERVER "docker rm -f horvitz-site || true"
+          set -e
+          eval "$(ssh-agent -s)"
+          echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
 
-          # Pull нового Docker-образа с Docker Registry
-          ssh -o StrictHostKeyChecking=no $USER@$SERVER "docker pull docker.dvorfs.com/horvitz/site:latest"
+          ssh -o StrictHostKeyChecking=no $USER@$SERVER << EOF
+            echo "Stopping old container..."
+            docker rm -f horvitz-site || true
 
-          # Запуск нового контейнера
-          ssh -o StrictHostKeyChecking=no $USER@$SERVER "docker run -d -p 4173:4173 --name horvitz-site docker.dvorfs.com/horvitz/site:latest"
+            echo "Pulling new image..."
+            docker pull docker.dvorfs.com/horvitz/site:latest
 
-          # Завершаем работу с SSH-агентом
+            echo "Starting new container..."
+            docker run --rm -d -p 4173:4173 --name horvitz-site docker.dvorfs.com/horvitz/site:latest
+          EOF
+
           ssh-agent -k
 
-      - name: Send TG notification about deploy
+      - name: ✅ TG: Deploy completed
+        if: success()
         uses: appleboy/telegram-action@master
+        continue-on-error: true
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: ${{ github.repository }} deploy completed ✅
+          message: "🚀 [DEPLOY COMPLETED] - Repo: ${{ github.repository }}\nBranch: ${{ github.ref_name }}\nServer: ${{ secrets.SERVER }}"
+
+      - name: ❌ TG: Deploy failed
+        if: failure()
+        uses: appleboy/telegram-action@master
+        continue-on-error: true
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: "❌ [DEPLOY FAILED] - Repo: ${{ github.repository }}\nBranch: ${{ github.ref_name }}\nServer: ${{ secrets.SERVER }}"
