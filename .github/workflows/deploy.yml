@@ -129,7 +129,7 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: "🚀 [DEPLOY COMPLETED] - Repo: ${{ github.repository }}\nBranch: ${{ github.ref_name }}\nServer: ${{ secrets.SERVER }}"
+          message: "🚀 [DEPLOY COMPLETED] - Repo: ${{ github.repository }}\nBranch: ${{ github.ref_name }}\nServer: http://${{ secrets.SERVER }}:4173"
 
       - name: "❌ TG: Deploy failed"
         if: failure()
@@ -138,4 +138,4 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: "❌ [DEPLOY FAILED] - Repo: ${{ github.repository }}\nBranch: ${{ github.ref_name }}\nServer: ${{ secrets.SERVER }}"
+          message: "❌ [DEPLOY FAILED] - Repo: ${{ github.repository }}\nBranch: ${{ github.ref_name }}\nServer: http://${{ secrets.SERVER }}:4173"
