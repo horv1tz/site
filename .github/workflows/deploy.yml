@@ -35,7 +35,7 @@ jobs:
           set -e
           npm install
 
-      - name: ✅ TG: Setup completed
+      - name: "✅ TG: Setup completed"
         if: success()
         uses: appleboy/telegram-action@master
         continue-on-error: true
@@ -44,7 +44,7 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: "✅ [SETUP COMPLETED] - Repo: ${{ github.repository }}\nBranch: ${{ github.ref_name }}"
 
-      - name: ❌ TG: Setup failed
+      - name: "❌ TG: Setup failed"
         if: failure()
         uses: appleboy/telegram-action@master
         continue-on-error: true
@@ -75,7 +75,7 @@ jobs:
           set -e
           docker push docker.dvorfs.com/horvitz/site:latest
 
-      - name: ✅ TG: Build completed
+      - name: "✅ TG: Build completed"
         if: success()
         uses: appleboy/telegram-action@master
         continue-on-error: true
@@ -84,7 +84,7 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: "📦 [BUILD COMPLETED] - Repo: ${{ github.repository }}\nBranch: ${{ github.ref_name }}"
 
-      - name: ❌ TG: Build failed
+      - name: "❌ TG: Build failed"
         if: failure()
         uses: appleboy/telegram-action@master
         continue-on-error: true
@@ -121,7 +121,7 @@ jobs:
 
           ssh-agent -k
 
-      - name: ✅ TG: Deploy completed
+      - name: "✅ TG: Deploy completed"
         if: success()
         uses: appleboy/telegram-action@master
         continue-on-error: true
@@ -130,7 +130,7 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: "🚀 [DEPLOY COMPLETED] - Repo: ${{ github.repository }}\nBranch: ${{ github.ref_name }}\nServer: ${{ secrets.SERVER }}"
 
-      - name: ❌ TG: Deploy failed
+      - name: "❌ TG: Deploy failed"
         if: failure()
         uses: appleboy/telegram-action@master
         continue-on-error: true
