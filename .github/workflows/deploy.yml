@@ -35,6 +35,10 @@ jobs:
           set -e
           npm install
 
+      - name: List repository files
+        run: ls -al
+
+
       - name: "✅ TG: Setup completed"
         if: success()
         uses: appleboy/telegram-action@master
