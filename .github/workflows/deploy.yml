@@ -58,6 +58,9 @@ jobs:
     needs: setup
 
     steps:
+      - name: List repository files
+        run: ls -al
+
       - name: Build Docker image
         run: |
           set -e
