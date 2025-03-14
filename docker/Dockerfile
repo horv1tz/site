@@ -15,7 +15,7 @@ FROM nginx:1.27.4-alpine
 
 COPY --from=build /app/build /usr/share/nginx/html
 
-COPY docker/default.conf /etc/nginx/conf.d/default.conf
+COPY docker/nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 4173
 
