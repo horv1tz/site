@@ -3,7 +3,7 @@ name: Build and Deploy by Docker
 on:
   push:
     branches:
-      - main  # Ветка, на которой будет запускаться деплой
+      - main
 
 jobs:
   setup:
@@ -31,13 +31,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: |
-          set -e
-          npm install
-
-      - name: List repository files
-        run: ls -al
-
+        run: npm install
 
       - name: "✅ TG: Setup completed"
         if: success()
@@ -62,8 +56,8 @@ jobs:
     needs: setup
 
     steps:
-      - name: List repository files
-        run: ls -al
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Build Docker image
         run: |
