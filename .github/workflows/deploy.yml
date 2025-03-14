@@ -61,7 +61,7 @@ jobs:
       - name: Build Docker image
         run: |
           set -e
-          docker build -t docker.dvorfs.com/horvitz/site:latest .
+          docker build -t docker.dvorfs.com/horvitz/site:latest -f docker/Dockerfile .
 
       - name: Log in to Docker registry
         uses: docker/login-action@v2
