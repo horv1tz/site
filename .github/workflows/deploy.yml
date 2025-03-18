@@ -117,6 +117,7 @@ jobs:
               --replicas 3 \
               --publish 4173:4173 \
               --constraint 'node.role == worker' \
+              --with-registry-auth \  
               docker.dvorfs.com/horvitz/site:${{ github.sha }}
           EOF
           
