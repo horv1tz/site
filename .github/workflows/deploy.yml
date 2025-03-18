@@ -62,7 +62,7 @@ jobs:
       - name: Build Docker image
         run: |
           set -e
-          docker build -t docker.dvorfs.com/horvitz/site:${{ github.sha }} -f ./docker/Dockerfile .
+          docker build -t docker.dvorfs.com/horvitz/site:latest -f ./docker/Dockerfile .
 
       - name: Log in to Docker registry
         uses: docker/login-action@v2
@@ -74,7 +74,7 @@ jobs:
       - name: Push Docker image
         run: |
           set -e
-          docker push docker.dvorfs.com/horvitz/site:${{ github.sha }}
+          docker push docker.dvorfs.com/horvitz/site:latest
 
       - name: "✅ TG: Build completed"
         if: success()
@@ -112,7 +112,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no $USER@$SERVER << EOF
             echo "Deploying to Swarm..."
             docker service rm horvitz-site || true
-            docker service create --name horvitz-site --replicas 3 --publish 4173:4173 --constraint 'node.role == worker' --with-registry-auth docker.dvorfs.com/horvitz/site:${{ github.sha[0:8] }}
+            docker service create --name horvitz-site --replicas 3 --publish 4173:4173 --constraint 'node.role == worker' --with-registry-auth docker.dvorfs.com/horvitz/site:latest
           EOF
           
           ssh-agent -k
