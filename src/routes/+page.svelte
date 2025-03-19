@@ -58,6 +58,7 @@
     <select name="lang" id="lang-select" bind:value={$currentLang} on:change={() => changeLanguage($currentLang)}>
         <option value="ru">🇷🇺</option>
         <option value="en">🇺🇸</option>
+        <option value="de">🇩🇪</option>
     </select>
 
     <div class="app">
