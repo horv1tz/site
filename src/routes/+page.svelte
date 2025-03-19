@@ -53,3 +53,6 @@
         </div>
     </div>
 </div>
+<footer class="author">
+    With ❤️ by <a href="https://horvitz.ru">horvitz</a>
+</footer>
