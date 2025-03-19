@@ -31,10 +31,13 @@ body {
     font-family: Arial, sans-serif;
     background-color: var(--bg-color);
     display: flex;
+    flex-direction: column; /* Stack children vertically */
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     padding: 20px;
+    gap: 20px; /* Spacing between profile-card and documentation */
+    width: 100%;
 }
 
 .profile-card {
@@ -115,6 +118,71 @@ body {
     transform: scale(var(--hover-scale));
 }
 
+#lang-select {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 16px;
+    outline: none;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#lang-select:hover {
+    background-color: var(--accent-color);
+}
+
+#lang-select:focus {
+    background-color: var(--accent-color);
+}
+
+#lang-select option {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+}
+
+.documentation {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    max-width: 800px;
+    width: 100%;
+}
+
+.documentation h1 {
+    color: var(--primary-color);
+    font-size: 24px;
+    margin: 20px;
+    text-align: left;
+}
+
+.documentation a {
+    display: inline-block;
+    padding: 10px 20px;
+    color: var(--text-color);
+    background-color: var(--accent-color);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all var(--transition-speed) ease;
+    margin: 20px;
+    margin-left: auto;
+}
+
+.documentation a:hover {
+    background-color: var(--secondary-color);
+    transform: scale(var(--hover-scale));
+}
+
 @media (min-width: 768px) {
     .profile-card {
         flex-direction: row;
@@ -144,33 +212,8 @@ body {
     .social-links {
         justify-content: flex-start;
     }
-}
 
-#lang-select {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background-color: var(--card-bg);
-    color: var(--text-color);
-    border: none;
-    border-radius: 8px;
-    padding: 8px 14px;
-    font-size: 16px;
-    outline: none;
-    cursor: pointer;
-    transition: all var(--transition-speed) ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-#lang-select:hover {
-    background-color: var(--accent-color);
-}
-
-#lang-select:focus {
-    background-color: var(--accent-color);
-}
-
-#lang-select option {
-    background-color: var(--card-bg);
-    color: var(--text-color);
+    .documentation {
+        flex-direction: row;
+    }
 }

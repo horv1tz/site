@@ -1,5 +1,7 @@
 {
   "name": "Леонид Дьяченко",
   "position": "SRE Инженер",
-  "company": "Центр-инвест \uD83D\uDC9A"
+  "company": "Центр-инвест \uD83D\uDC9A",
+  "documentation_name": "Советую почитать мою доку)",
+  "documentation_button": "Дока"
 }
