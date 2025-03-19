@@ -61,6 +61,7 @@
         <option value="en">🇺🇸</option>
         <option value="de">🇩🇪</option>
         <option value="fr">🇫🇷</option>
+        <option value="ar">🇲🇦</option>
     </select>
 
     <div class="app">
