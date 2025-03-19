@@ -1,5 +1,5 @@
 <script>
-    import { t, locale, setLocale } from '$lib/translations.js';
+    import { t, setLocale } from '$lib/translations.js';
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
 
