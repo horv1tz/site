@@ -74,7 +74,7 @@ jobs:
       - name: Push Docker image
         run: |
           set -e
-          docker push docker.dvorfs.com/horvitz/site:latest
+          docker push docker.dvorfs.com/horvitz/site:sabbath
 
       - name: "✅ TG: Build completed"
         if: success()
