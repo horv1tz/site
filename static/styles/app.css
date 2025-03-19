@@ -1,3 +1,9 @@
+/* Универсальное box-sizing */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* Базовые стили для body */
 html,
 body {
     margin: 0;
@@ -12,6 +18,7 @@ body {
     overflow: hidden;
 }
 
+/* Переменные для темной палитры */
 :root {
     --bg-color: #1E1E1E;
     --card-bg: #2A2A2A;
@@ -27,19 +34,21 @@ body {
     --shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
+/* Стили для контейнера приложения */
 .app {
     margin: 0;
     font-family: Arial, sans-serif;
     display: flex;
-    flex-direction: column; /* Stack children vertically */
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     padding: 20px;
-    gap: 20px; /* Spacing between profile-card and documentation */
+    gap: 20px;
     width: 100%;
 }
 
+/* Стили для карточки профиля */
 .profile-card {
     background-color: var(--card-bg);
     display: flex;
@@ -51,6 +60,7 @@ body {
     overflow: hidden;
 }
 
+/* Стили для изображения профиля */
 .profile-image {
     width: 100%;
     max-height: 300px;
@@ -63,6 +73,7 @@ body {
     object-fit: cover;
 }
 
+/* Информация о профиле */
 .profile-info {
     padding: 28px;
     color: var(--text-color);
@@ -73,14 +84,14 @@ body {
 }
 
 .profile-info h1 {
-    font-size: 27px;
+    font-size: clamp(1.5rem, 2vw + 1rem, 2.5rem); /* Использование clamp для динамичного размера шрифта */
     margin-bottom: 10px;
     color: var(--primary-color);
 }
 
 .profile-info .position,
 .profile-info .company {
-    font-size: 17px;
+    font-size: 1rem; /* Вместо фиксированных пикселей используем rem */
     color: var(--secondary-color);
     margin-bottom: 10px;
     text-decoration: none;
@@ -91,6 +102,7 @@ body {
     color: var(--primary-color);
 }
 
+/* Ссылки на социальные сети */
 .social-links {
     display: flex;
     gap: 14px;
@@ -115,9 +127,10 @@ body {
 }
 
 .social-link:hover {
-    transform: scale(var(--hover-scale));
+    transform: scale(var(--hover-scale)); /* Плавное увеличение при наведении */
 }
 
+/* Стили для селектора языка */
 #lang-select {
     position: absolute;
     top: 20px;
@@ -127,15 +140,16 @@ body {
     border: none;
     border-radius: 8px;
     padding: 8px 14px;
-    font-size: 16px;
+    font-size: 1rem;
     outline: none;
     cursor: pointer;
-    transition: all var(--transition-speed) ease;
+    transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 #lang-select:hover {
     background-color: var(--hover-button-color);
+    transform: scale(1.02); /* Легкое увеличение кнопки при наведении */
 }
 
 #lang-select option {
@@ -143,6 +157,7 @@ body {
     color: var(--text-color);
 }
 
+/* Документация */
 .documentation {
     margin-top: 20px;
     display: flex;
@@ -153,12 +168,13 @@ body {
     box-shadow: var(--shadow);
     max-width: 800px;
     width: 100%;
+    padding: 20px; /* Добавляем отступы, чтобы контент не прилегал к краям */
 }
 
 .documentation h1 {
     color: var(--primary-color);
-    font-size: 24px;
-    margin: 20px;
+    font-size: 24px; /* Убираем динамическое изменение размера */
+    margin: 0; /* Убираем отступы */
     text-align: left;
 }
 
@@ -170,8 +186,7 @@ body {
     text-decoration: none;
     border-radius: 8px;
     transition: all var(--transition-speed) ease;
-    margin: 20px;
-    margin-left: auto;
+    margin: 0; /* Убираем дополнительные отступы */
 }
 
 .documentation a:hover {
@@ -179,6 +194,7 @@ body {
     transform: scale(var(--hover-scale));
 }
 
+/* Медиазапросы для адаптивности */
 @media (min-width: 768px) {
     .profile-card {
         flex-direction: row;
@@ -197,12 +213,12 @@ body {
     }
 
     .profile-info h1 {
-        font-size: 30px;
+        font-size: 2rem; /* Для больших экранов увеличиваем размер */
     }
 
     .profile-info .position,
     .profile-info .company {
-        font-size: 19px;
+        font-size: 1.2rem; /* Увеличиваем шрифт для больших экранов */
     }
 
     .social-links {
@@ -212,4 +228,19 @@ body {
     .documentation {
         flex-direction: row;
     }
+}
+
+/* Стили для спиннера загрузки */
+.spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #5a1c36;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
