@@ -16,6 +16,11 @@ const config = ({
             locale: 'de',
             key: 'main',
             loader: async () => (await import('../locales/de.json')).default,
+        },
+        {
+            locale: 'fr',
+            key: 'main',
+            loader: async () => (await import('../locales/fr.json')).default,
         }
     ],
 });
