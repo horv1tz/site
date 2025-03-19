@@ -43,17 +43,11 @@
             <div class="position">{$t('main.position')}</div>
             <a href="https://centrinvest.ru/" class="company">{$t('main.company')}</a>
             <div class="social-links">
-                <a href="https://t.me/horvitz" class="social-link" target="_blank" rel="noopener noreferrer">
+                <a href="https://t.me/SergeySabbath" class="social-link" target="_blank" rel="noopener noreferrer">
                     <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/telegram.svg" alt="Telegram">
                 </a>
-                <a href="https://github.com/horv1tz" class="social-link" target="_blank" rel="noopener noreferrer">
+                <a href="https://github.com/sabbath666" class="social-link" target="_blank" rel="noopener noreferrer">
                     <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/github.svg" alt="Github">
-                </a>
-                <a href="https://vk.com/horvitz" class="social-link" target="_blank" rel="noopener noreferrer">
-                    <img src="/images/vk-icon.svg" alt="VK">
-                </a>
-                <a href="mailto:horvitz@dvorfs.ru" class="social-link" target="_blank" rel="noopener noreferrer">
-                    <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/envelope-fill.svg" alt="Email">
                 </a>
             </div>
         </div>
