@@ -20,5 +20,14 @@ export const { t, locale, locales, loading, loadTranslations } = new i18n(config
 // Функция смены языка
 export const setLocale = async (newLocale) => {
     locale.set(newLocale);
-    await loadTranslations(newLocale, window.location.pathname);
+    if (typeof window !== 'undefined') {
+        await loadTranslations(newLocale, '/'); // Загружаем переводы явно
+    }
 };
+
+// Загружаем переводы при старте (чтобы избежать ошибки "No locale provided")
+if (typeof window !== 'undefined') {
+    const savedLang = localStorage.getItem('lang') || 'ru';
+    locale.set(savedLang);
+    loadTranslations(savedLang, '/');
+}

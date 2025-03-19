@@ -1,65 +1,93 @@
 <script>
-    import { t, setLocale } from '$lib/translations.js';
+    import { t, setLocale, loadTranslations } from '$lib/translations.js';
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
 
-    // Создаём реактивную переменную для текущего языка
-    let currentLang = writable('ru');
+    const currentLang = writable('ru');
+    let ready = writable(false); // Флаг завершения загрузки
 
     // Функция для смены языка
-    function changeLanguage(lang) {
+    async function changeLanguage(lang) {
         if (typeof document !== 'undefined') {
-            document.cookie = `lang=${lang}; path=/; max-age=31536000; SameSite=Lax`; // 1 год
+            document.cookie = `lang=${lang}; path=/; max-age=31536000; SameSite=Lax`;
             localStorage.setItem('lang', lang);
         }
-        setLocale(lang);
-        currentLang.set(lang); // Обновляем реактивную переменную с текущим языком
+        await setLocale(lang);
+        currentLang.set(lang);
     }
 
-    // При загрузке страницы проверяем localStorage и cookies
-    onMount(() => {
-        if (typeof localStorage !== 'undefined') {
-            const savedLang = localStorage.getItem('lang') || document.cookie.replace(/(?:(?:^|.*;\s*)lang\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-            const defaultLang = savedLang || 'ru';  // Устанавливаем язык по умолчанию, если не найден
+    // Функция для загрузки изображения и ожидания его загрузки
+    function loadImage(src) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = src;
+            img.onload = resolve;
+            img.onerror = reject;
+        });
+    }
 
-            setLocale(defaultLang);
-            currentLang.set(defaultLang); // Устанавливаем дефолтный язык в реактивную переменную
+    // Загрузка переводов и изображений
+    onMount(async () => {
+        // Загружаем переводы
+        const cookieLang = document.cookie.split('; ').find(row => row.startsWith('lang='))?.split('=')[1];
+        const savedLang = cookieLang || localStorage.getItem('lang') || 'ru';
+
+        currentLang.set(savedLang);
+        await setLocale(savedLang); // Устанавливаем язык
+        await loadTranslations(savedLang, '/'); // Загружаем переводы
+
+        // Загружаем иконку VK
+        try {
+            await loadImage('https://s3.dvorfs.com/horvitz-site/vk-icon.svg');
+        } catch (error) {
+            console.error('Ошибка загрузки иконки VK', error);
         }
+
+        // Когда все ресурсы загружены, показываем контент
+        ready.set(true);
     });
 </script>
 
-<select name="lang" id="lang-select" bind:value={$currentLang} on:change={e => changeLanguage(e.target.value)}>
-    <option value="ru">🇷🇺</option>
-    <option value="en">🇺🇸</option>
-</select>
+{#if !$ready}
+    <!-- Загрузка с анимацией -->
+    <div class="loading-screen">
+        <div class="spinner"></div>
+    </div>
+{:else}
+    <!-- Основной контент страницы -->
+    <select name="lang" id="lang-select" bind:value={$currentLang} on:change={() => changeLanguage($currentLang)}>
+        <option value="ru">🇷🇺</option>
+        <option value="en">🇺🇸</option>
+    </select>
 
-<div class="app">
-    <div class="profile-card">
-        <div class="profile-image">
-            <img src="https://s3.dvorfs.com/horvitz-site/cat.jpg" alt="Profile photo" />
-        </div>
-        <div class="profile-info">
-            <h1>{$t('main.name')}</h1>
-            <div class="position">{$t('main.position')}</div>
-            <a href="https://centrinvest.ru/" class="company">{$t('main.company')}</a>
-            <div class="social-links">
-                <a href="https://t.me/horvitz" class="social-link" target="_blank" rel="noopener noreferrer">
-                    <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/telegram.svg" alt="Telegram">
-                </a>
-                <a href="https://github.com/horv1tz" class="social-link" target="_blank" rel="noopener noreferrer">
-                    <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/github.svg" alt="Github">
-                </a>
-                <a href="https://vk.com/horvitz" class="social-link" target="_blank" rel="noopener noreferrer">
-                    <img src="/images/vk-icon.svg" alt="VK">
-                </a>
-                <a href="mailto:horvitz@dvorfs.ru" class="social-link" target="_blank" rel="noopener noreferrer">
-                    <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/envelope-fill.svg" alt="Email">
-                </a>
+    <div class="app">
+        <div class="profile-card">
+            <div class="profile-image">
+                <img src="https://s3.dvorfs.com/horvitz-site/cat.jpg" alt="Profile of a cat" />
+            </div>
+            <div class="profile-info">
+                <h1>{$t('main.name')}</h1>
+                <div class="position">{$t('main.position')}</div>
+                <a href="https://centrinvest.ru/" class="company">{$t('main.company')}</a>
+                <div class="social-links">
+                    <a href="https://t.me/horvitz" class="social-link" target="_blank" rel="noopener noreferrer">
+                        <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/telegram.svg" alt="Telegram">
+                    </a>
+                    <a href="https://github.com/horv1tz" class="social-link" target="_blank" rel="noopener noreferrer">
+                        <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/github.svg" alt="Github">
+                    </a>
+                    <a href="https://vk.com/horvitz" class="social-link" target="_blank" rel="noopener noreferrer">
+                        <img src="https://s3.dvorfs.com/horvitz-site/vk-icon.svg" alt="VK">
+                    </a>
+                    <a href="mailto:horvitz@dvorfs.ru" class="social-link" target="_blank" rel="noopener noreferrer">
+                        <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/envelope-fill.svg" alt="Email">
+                    </a>
+                </div>
             </div>
         </div>
+        <div class="documentation">
+            <h1>{$t('main.documentation_name')}</h1>
+            <a href="https://docs.horvitz.ru">{$t('main.documentation_button')}</a>
+        </div>
     </div>
-    <div class="documentation">
-        <h1>{$t('main.documentation_name')}</h1>
-        <a href="https://docs.horvitz.ru">{$t('main.documentation_button')}</a>
-    </div>
-</div>
+{/if}
