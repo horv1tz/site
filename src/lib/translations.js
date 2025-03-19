@@ -8,6 +8,11 @@ const config = ({
             loader: async () => (await import('../locales/ru.json')).default,
         },
         {
+            locale: 'kz',
+            key: 'main',
+            loader: async () => (await import('../locales/kz.json')).default,
+        },
+        {
             locale: 'en',
             key: 'main',
             loader: async () => (await import('../locales/en.json')).default,

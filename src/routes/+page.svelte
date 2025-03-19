@@ -57,6 +57,7 @@
     <!-- Основной контент страницы -->
     <select name="lang" id="lang-select" bind:value={$currentLang} on:change={() => changeLanguage($currentLang)}>
         <option value="ru">🇷🇺</option>
+        <option value="kz">🇰🇿</option>
         <option value="en">🇺🇸</option>
         <option value="de">🇩🇪</option>
         <option value="fr">🇫🇷</option>
