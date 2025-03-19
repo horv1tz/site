@@ -60,6 +60,6 @@
     </div>
     <div class="documentation">
         <h1>{$t('main.documentation_name')}</h1>
-        <a href="https://docs.horvitz.com">{$t('main.documentation_button')}</a>
+        <a href="https://docs.horvitz.ru">{$t('main.documentation_button')}</a>
     </div>
 </div>
