@@ -92,7 +92,23 @@
     </div>
 {/if}
 
+<!-- Стиль для загрузочного экрана -->
 <style>
+    /* Стиль body */
+    body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background: #1E1E1E url("https://s3.dvorfs.com/horvitz-site/background.png") no-repeat center/cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    /* Анимация загрузки */
     .loading-screen {
         position: absolute;
         top: 0;
@@ -105,7 +121,6 @@
         background-color: rgba(30, 30, 30, 0.8); /* Тёмный фон с прозрачностью */
         z-index: 9999;
         flex-direction: column;
-        text-align: center;
     }
 
     .spinner {
