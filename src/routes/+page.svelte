@@ -4,9 +4,8 @@
     import { writable } from 'svelte/store';
 
     const currentLang = writable('ru');
-    let ready = writable(false); // Флаг завершения загрузки
+    let ready = writable(false);
 
-    // Функция для смены языка
     async function changeLanguage(lang) {
         if (typeof document !== 'undefined') {
             document.cookie = `lang=${lang}; path=/; max-age=31536000; SameSite=Lax`;
@@ -16,45 +15,47 @@
         currentLang.set(lang);
     }
 
-    // Функция для загрузки изображения и ожидания его загрузки
-    function loadImage(src) {
-        return new Promise((resolve, reject) => {
+    // Загружаем только важные изображения (фон, фото, VK)
+    async function loadImages(urls) {
+        await Promise.all(urls.map(src => new Promise((resolve, reject) => {
             const img = new Image();
             img.src = src;
             img.onload = resolve;
             img.onerror = reject;
-        });
+        })));
     }
 
-    // Загрузка переводов и изображений
     onMount(async () => {
-        // Загружаем переводы
-        const cookieLang = document.cookie.split('; ').find(row => row.startsWith('lang='))?.split('=')[1];
+        const cookieLang = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('lang='))?.split('=')[1];
         const savedLang = cookieLang || localStorage.getItem('lang') || 'ru';
 
         currentLang.set(savedLang);
-        await setLocale(savedLang); // Устанавливаем язык
-        await loadTranslations(savedLang, '/'); // Загружаем переводы
 
-        // Загружаем иконку VK
-        try {
-            await loadImage('https://s3.dvorfs.com/horvitz-site/vk-icon.svg');
-        } catch (error) {
-            console.error('Ошибка загрузки иконки VK', error);
+        await Promise.all([
+            setLocale(savedLang),
+            loadTranslations(savedLang, '/'),
+            loadImages([
+                'https://s3.dvorfs.com/horvitz-site/cat.jpg',
+                'https://s3.dvorfs.com/horvitz-site/vk-icon.svg',
+                'https://s3.dvorfs.com/horvitz-site/background.png'
+            ])
+        ]).catch(error => console.error('Ошибка загрузки ресурсов', error));
+
+        if (document.readyState !== 'complete') {
+            await new Promise(resolve => window.addEventListener('load', resolve));
         }
 
-        // Когда все ресурсы загружены, показываем контент
         ready.set(true);
     });
 </script>
 
 {#if !$ready}
-    <!-- Загрузка с анимацией -->
     <div class="loading-screen">
         <div class="spinner"></div>
     </div>
 {:else}
-    <!-- Основной контент страницы -->
     <select name="lang" id="lang-select" bind:value={$currentLang} on:change={() => changeLanguage($currentLang)}>
         <option value="ru">🇷🇺</option>
         <option value="kz">🇰🇿</option>
@@ -97,12 +98,10 @@
 {/if}
 
 <style>
-    /* Стиль body */
     body {
         margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
         background: #121212 url("https://s3.dvorfs.com/horvitz-site/background.png") no-repeat center/cover;
         display: flex;
         justify-content: center;
@@ -111,7 +110,6 @@
         overflow: hidden;
     }
 
-    /* Анимация загрузки */
     .loading-screen {
         position: absolute;
         top: 0;
