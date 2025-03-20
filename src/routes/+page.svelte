@@ -96,7 +96,6 @@
     </div>
 {/if}
 
-<!-- Стиль для загрузочного экрана -->
 <style>
     /* Стиль body */
     body {
@@ -104,7 +103,7 @@
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        background: #1E1E1E url("https://s3.dvorfs.com/horvitz-site/background.png") no-repeat center/cover;
+        background: #121212 url("https://s3.dvorfs.com/horvitz-site/background.png") no-repeat center/cover;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -122,18 +121,20 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: rgba(30, 30, 30, 0.8); /* Тёмный фон с прозрачностью */
+        background: rgba(18, 18, 18, 0.9);
         z-index: 9999;
         flex-direction: column;
+        backdrop-filter: blur(10px);
     }
 
     .spinner {
-        border: 8px solid #f3f3f3;
-        border-top: 8px solid #5a1c36; /* Цвет спиннера */
+        border: 6px solid rgba(255, 255, 255, 0.2);
+        border-top: 6px solid #e63946;
         border-radius: 50%;
-        width: 60px;
-        height: 60px;
-        animation: spin 2s linear infinite;
+        width: 70px;
+        height: 70px;
+        animation: spin 1.5s cubic-bezier(0.6, 0.2, 0.4, 0.8) infinite;
+        box-shadow: 0 0 15px rgba(230, 57, 70, 0.6);
     }
 
     @keyframes spin {
