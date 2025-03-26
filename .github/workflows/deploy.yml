@@ -112,7 +112,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no $USER@$SERVER << EOF
             echo "Deploying to Swarm..."
             docker service rm horvitz-site || true
-            docker service create --name horvitz-site --replicas 3 --publish 4173:4173 --constraint 'node.role == worker' --with-registry-auth docker.dvorfs.com/horvitz/site:latest
+            docker service create --name horvitz-site --replicas 3 --publish 4173:4173 --constraint 'node.role == worker' --with-registry-auth --label "traefik.enable=true" --label "traefik.http.routers.horvitz-site.rule=Host(`horvitz.ru`)" --label "traefik.http.services.horvitz-site-service.loadbalancer.server.port=8080" docker.dvorfs.com/horvitz/site:latest 
           EOF
           
           ssh-agent -k
