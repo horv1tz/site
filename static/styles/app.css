@@ -26,7 +26,7 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: #1E1E1E url("https://s3.dvorfs.com/horvitz-site/background.png") no-repeat center/cover;
+    background: #1E1E1E url("https://s3.dvorfs.com/horvitz-site/background.webp") no-repeat center/cover;
     display: flex;
     justify-content: center;
     align-items: center;

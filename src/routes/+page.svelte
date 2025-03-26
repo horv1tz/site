@@ -37,9 +37,9 @@
             setLocale(savedLang),
             loadTranslations(savedLang, '/'),
             loadImages([
-                'https://s3.dvorfs.com/horvitz-site/cat.jpg',
+                'https://s3.dvorfs.com/horvitz-site/cat.webp',
                 'https://s3.dvorfs.com/horvitz-site/vk-icon.svg',
-                'https://s3.dvorfs.com/horvitz-site/background.png'
+                'https://s3.dvorfs.com/horvitz-site/background.webp'
             ])
         ]).catch(error => console.error('Ошибка загрузки ресурсов', error));
 
@@ -68,7 +68,7 @@
     <div class="app">
         <div class="profile-card">
             <div class="profile-image">
-                <img src="https://s3.dvorfs.com/horvitz-site/cat.jpg" alt="Profile of a cat" />
+                <img src="https://s3.dvorfs.com/horvitz-site/cat.webp" alt="Profile of a cat" />
             </div>
             <div class="profile-info">
                 <h1>{$t('main.name')}</h1>
